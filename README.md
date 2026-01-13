@@ -1,1 +1,1 @@
-# static-web
+(deleted)
