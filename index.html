@@ -7,9 +7,39 @@
 </head>
 <body style="font-family: Arial, sans-serif; text-align: center; margin-top: 100px;">
 
-    <h1>Welcome 👋</h1>
-    <p>This is my static web page</p>
-    <p>Hosted on GitHub Pages</p>
+   <div id="joke-container" style="background:#fff176; padding:30px; border-radius:15px; text-align:center; margin-bottom:25px; box-shadow: 0 6px 20px rgba(0,0,0,0.25); font-family: Arial, sans-serif; font-size:18px; color:#d32f2f;">
+</div>
+
+<script>
+const jokes = [
+    "ليه خمس شباب الهندسة دايمًا صاحيين؟ عشان القهوة أقوى من النوم! ☕😂",
+    "المعادلة البسيطة عند البروفسور: x + y = إحنا تعبانين 😅",
+    "لو المشروع نجح، إحنا أبطال! لو لأ… على الأقل الضحك كان مجاني 😎"
+];
+
+const container = document.getElementById("joke-container");
+let index = 0;
+
+function showJoke() {
+    if(index < jokes.length){
+        const p = document.createElement("p");
+        p.style.opacity = 0;
+        p.style.transition = "opacity 1s";
+        p.textContent = jokes[index];
+        container.appendChild(p);
+
+        // Fade-in
+        setTimeout(()=>{ p.style.opacity = 1; }, 100);
+
+        index++;
+        // عرض النكتة التالية بعد 3 ثواني
+        setTimeout(showJoke, 3000);
+    }
+}
+
+showJoke();
+</script>
+
 
 </body>
 </html>
