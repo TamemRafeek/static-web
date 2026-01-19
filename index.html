@@ -2,75 +2,70 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Static Web Page</title>
+    <title>Behind The Scenes</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
-<body style="font-family: Arial, sans-serif; text-align: center; margin-top: 100px;">
+<body style="font-family:Arial; text-align:center; margin-top:100px;">
 
-    <h1>Welcome 👋</h1>
-    <p>This is my static web page</p>
-    <p>Hosted on GitHub Pages</p>
+<h1>Welcome 👋</h1>
+<p>This is my static web page</p>
+<p>Hosted on GitHub Pages</p>
 
-    <!-- زرار الكواليس -->
-    <button id="showVideoBtn"
-    style="
-    padding:15px 30px;
-    font-size:18px;
+<!-- زرار تشغيل الفيديو -->
+<button id="playBtn" style="
+padding:15px 30px;
+font-size:18px;
+border:none;
+border-radius:25px;
+background:#d32f2f;
+color:white;
+cursor:pointer;
+box-shadow:0 6px 15px rgba(0,0,0,0.3);
+margin-top:30px;">
+🎬 شوف الكواليس
+</button>
+
+<!-- زرار تحميل الفيديو -->
+<br><br>
+<a href="assets/videos/behind_the_scenes.mp4" download>
+    <button style="
+    padding:10px 25px;
+    font-size:16px;
     border:none;
-    border-radius:25px;
-    background:#d32f2f;
+    border-radius:20px;
+    background:#1976d2;
     color:white;
-    cursor:pointer;
-    box-shadow:0 6px 15px rgba(0,0,0,0.3);
-    margin-top:30px;
-    ">
-        🎬 شوف الكواليس
+    cursor:pointer;">
+    ⬇️ حمّل الفيديو
     </button>
+</a>
 
-    <!-- الفيديو المحلي -->
-    <video id="btsVideo" controls muted
-    style="display:none; width:100%; height:100%;">
-        <source src="behind_the_scenes.mp4" type="video/mp4">
-        متصفحك لا يدعم الفيديو
-    </video>
+<!-- الفيديو -->
+<video id="btsVideo" muted controls
+style="display:none; width:100%; height:100%;">
+    <source src="assets/videos/behind_the_scenes.mp4" type="video/mp4">
+    متصفحك لا يدعم الفيديو
+</video>
 
-    <!-- كلام بعد الفيديو -->
-    <p id="afterText" style="
-    display:none;
-    font-size:20px;
-    margin-top:25px;
-    opacity:0;
-    transition:opacity 1s;
-    ">
-        اللي شوفته ده مش إخراج…  
-        ده ضغط مشروع تخرج رسمي 😅
-    </p>
-
-    <!-- صندوق النكت -->
-    <div id="joke-container" style="
-    display:none;
-    background:#fff176;
-    padding:30px;
-    border-radius:15px;
-    text-align:center;
-    margin:25px auto;
-    width:80%;
-    box-shadow:0 6px 20px rgba(0,0,0,0.25);
-    font-size:18px;
-    color:#d32f2f;
-    ">
-    </div>
+<!-- كلام بعد الفيديو -->
+<p id="afterText" style="
+display:none;
+font-size:20px;
+margin-top:25px;
+opacity:0;
+transition:opacity 1s;">
+    اللي شوفته ده مش تمثيل…  
+    ده ضغط مشروع تخرج على أصوله 😅
+</p>
 
 <script>
-/* ===== التحكم في الفيديو ===== */
-const btn = document.getElementById("showVideoBtn");
+const playBtn = document.getElementById("playBtn");
 const video = document.getElementById("btsVideo");
 const afterText = document.getElementById("afterText");
-const jokeContainer = document.getElementById("joke-container");
 
-btn.onclick = () => {
-    btn.style.display = "none";
+playBtn.onclick = () => {
+    playBtn.style.display = "none";
     video.style.display = "block";
     video.play();
 
@@ -79,51 +74,16 @@ btn.onclick = () => {
         video.requestFullscreen();
     } else if (video.webkitRequestFullscreen) {
         video.webkitRequestFullscreen();
-    } else if (video.msRequestFullscreen) {
-        video.msRequestFullscreen();
     }
 };
 
-// بعد انتهاء الفيديو
 video.onended = () => {
     if (document.fullscreenElement) {
         document.exitFullscreen();
     }
-
     afterText.style.display = "block";
-    setTimeout(() => {
-        afterText.style.opacity = 1;
-    }, 100);
-
-    // بعد الكلام تبدأ النكت
-    setTimeout(() => {
-        jokeContainer.style.display = "block";
-        showJoke();
-    }, 1500);
+    setTimeout(()=>{ afterText.style.opacity = 1; },100);
 };
-
-/* ===== النكت ===== */
-const jokes = [
-    "ليه خمس شباب الهندسة دايمًا صاحيين؟ عشان القهوة أقوى من النوم ☕😂",
-    "المعادلة عند الدكتور: x + y = إحنا تعبانين 😅",
-    "لو المشروع نجح إحنا أبطال… لو لأ، المهم حاولنا 😎"
-];
-
-let index = 0;
-
-function showJoke() {
-    if (index < jokes.length) {
-        const p = document.createElement("p");
-        p.style.opacity = 0;
-        p.style.transition = "opacity 1s";
-        p.textContent = jokes[index];
-        jokeContainer.appendChild(p);
-
-        setTimeout(() => { p.style.opacity = 1; }, 100);
-        index++;
-        setTimeout(showJoke, 3000);
-    }
-}
 </script>
 
 </body>
