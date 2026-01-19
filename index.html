@@ -5,41 +5,124 @@
     <title>My Static Web Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
+
 <body style="font-family: Arial, sans-serif; text-align: center; margin-top: 100px;">
 
-   <div id="joke-container" style="background:#fff176; padding:30px; border-radius:15px; text-align:center; margin-bottom:25px; box-shadow: 0 6px 20px rgba(0,0,0,0.25); font-family: Arial, sans-serif; font-size:18px; color:#d32f2f;">
-</div>
+    <h1>Welcome 👋</h1>
+    <p>This is my static web page</p>
+    <p>Hosted on GitHub Pages</p>
+
+    <!-- زرار تشغيل الكواليس -->
+    <button id="showVideoBtn"
+    style="
+    padding:15px 30px;
+    font-size:18px;
+    border:none;
+    border-radius:25px;
+    background:#d32f2f;
+    color:white;
+    cursor:pointer;
+    box-shadow:0 6px 15px rgba(0,0,0,0.3);
+    margin-top:30px;
+    ">
+        🎬 شوف الكواليس
+    </button>
+
+    <!-- الفيديو -->
+    <video id="btsVideo" controls muted
+    style="display:none; width:100%; height:100%;">
+        <source src="behind_the_scenes.mp4" type="video/mp4">
+        متصفحك لا يدعم الفيديو
+    </video>
+
+    <!-- الكلام بعد الفيديو -->
+    <p id="afterText" style="
+    display:none;
+    font-size:20px;
+    margin-top:25px;
+    opacity:0;
+    transition:opacity 1s;
+    ">
+        اللي شوفته ده مش إخراج…  
+        ده ضغط مشروع تخرج على أصوله 😅
+    </p>
+
+    <!-- صندوق النكت -->
+    <div id="joke-container" style="
+    display:none;
+    background:#fff176;
+    padding:30px;
+    border-radius:15px;
+    text-align:center;
+    margin:25px auto;
+    width:80%;
+    box-shadow:0 6px 20px rgba(0,0,0,0.25);
+    font-size:18px;
+    color:#d32f2f;
+    ">
+    </div>
 
 <script>
+/* ===== التحكم في الفيديو ===== */
+const btn = document.getElementById("showVideoBtn");
+const video = document.getElementById("btsVideo");
+const afterText = document.getElementById("afterText");
+const jokeContainer = document.getElementById("joke-container");
+
+btn.onclick = () => {
+    btn.style.display = "none";
+    video.style.display = "block";
+    video.play();
+
+    if (video.requestFullscreen) {
+        video.requestFullscreen();
+    } else if (video.webkitRequestFullscreen) {
+        video.webkitRequestFullscreen();
+    } else if (video.msRequestFullscreen) {
+        video.msRequestFullscreen();
+    }
+};
+
+video.onended = () => {
+    if (document.fullscreenElement) {
+        document.exitFullscreen();
+    }
+
+    afterText.style.display = "block";
+    setTimeout(() => {
+        afterText.style.opacity = 1;
+    }, 100);
+
+    // بعد الكلام تبدأ النكت
+    setTimeout(() => {
+        jokeContainer.style.display = "block";
+        showJoke();
+    }, 1500);
+};
+
+/* ===== النكت ===== */
 const jokes = [
-    "ليه خمس شباب الهندسة دايمًا صاحيين؟ عشان القهوة أقوى من النوم! ☕😂",
-    "المعادلة البسيطة عند البروفسور: x + y = إحنا تعبانين 😅",
-    "لو المشروع نجح، إحنا أبطال! لو لأ… على الأقل الضحك كان مجاني 😎"
+    "ليه خمس شباب الهندسة دايمًا صاحيين؟ عشان القهوة أقوى من النوم ☕😂",
+    "المعادلة البسيطة عند الدكتور: x + y = إحنا تعبانين 😅",
+    "لو المشروع نجح إحنا أبطال… لو لأ، المهم إننا حاولنا 😎"
 ];
 
-const container = document.getElementById("joke-container");
 let index = 0;
 
 function showJoke() {
-    if(index < jokes.length){
+    if (index < jokes.length) {
         const p = document.createElement("p");
         p.style.opacity = 0;
         p.style.transition = "opacity 1s";
         p.textContent = jokes[index];
-        container.appendChild(p);
+        jokeContainer.appendChild(p);
 
-        // Fade-in
-        setTimeout(()=>{ p.style.opacity = 1; }, 100);
-
+        setTimeout(() => { p.style.opacity = 1; }, 100);
         index++;
-        // عرض النكتة التالية بعد 3 ثواني
         setTimeout(showJoke, 3000);
     }
 }
-
-showJoke();
 </script>
-
 
 </body>
 </html>
